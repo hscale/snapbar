@@ -1,10 +1,12 @@
 import SwiftUI
 import AppKit
 import ApplicationServices
+import ServiceManagement
 
 @main
 struct SnapBarApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    @State private var launchAtLogin = (SMAppService.mainApp.status == .enabled)
 
     var body: some Scene {
         MenuBarExtra {
@@ -19,6 +21,19 @@ struct SnapBarApp: App {
             }
             Divider()
             Button("Show Toolbar") { SnapBarPanel.shared?.show() }
+            Divider()
+            Toggle("Launch at Login", isOn: $launchAtLogin)
+                .onChange(of: launchAtLogin) { _, enabled in
+                    do {
+                        if enabled {
+                            try SMAppService.mainApp.register()
+                        } else {
+                            try SMAppService.mainApp.unregister()
+                        }
+                    } catch {
+                        launchAtLogin = (SMAppService.mainApp.status == .enabled)
+                    }
+                }
             Divider()
             Button("Quit SnapBar") { NSApp.terminate(nil) }
         } label: {
