@@ -1,0 +1,19 @@
+# Build outputs
+*.app/
+*.app
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Xcode
+*.xcodeproj/
+*.xcworkspace/
+DerivedData/
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Internal task notes
+tasks/
